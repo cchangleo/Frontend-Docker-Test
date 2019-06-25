@@ -1,0 +1,11 @@
+{
+    "name": "frontend-test",
+    "script": "./dist/server/server.js",
+    "instances": "2",
+    "env": {
+      "NODE_ENV": "development"
+    },
+    "env_production" : {
+      "NODE_ENV": "production"
+    }
+  }

@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  reverse-proxy:
+    image: traefik:1.7.11-alpine
+    restart: always
+    container_name: traefik
+    ports:
+      - "80:80" #Http port
+      - "8080:8080" #The Web UI
+      - "443:443"
+    networks:
+      - traefik
+    command: traefik -c /etc/traefik.toml
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.toml:/traefik.toml
+      - ./logs:/data/logs
+      - ./acme.json:/acme.json
+  app:
+    build: .
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:${APP_HOST}"   
+
+networks:
+  traefik:
+    external: true
